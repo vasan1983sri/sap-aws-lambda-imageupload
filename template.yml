@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot 2 API - org.sap::aws-lambda-imageupload
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  AwsLambdaImageuploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sap.sap_lambda_imageupload.StreamLambdaHandler::handleRequest
+      Runtime: java25
+      Environment:
+        Variables:
+          SPRING_PROFILES_ACTIVE: prod
+      CodeUri: .
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  AwsLambdaImageuploadApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: AwsLambdaImageuploadApi
