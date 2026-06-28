@@ -17,6 +17,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         File targetFile = new File("/tmp/testdb.mv.db");
 
+
         // Only extract if the database file does not already exist on the host machine
         if (!targetFile.exists()) {
             ClassPathResource resource = new ClassPathResource("/tmp/testdb.mv.db");
